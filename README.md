@@ -1,6 +1,6 @@
 # Opti "NOT" Fine ! (No Indium? Unofficial Forge Port) <img src="src/main/resources/icon.png" align="right" width="160"/>
 
-[![ForgedFabric API](ForgedFabricAPI.png)](https://www.curseforge.com/minecraft/mc-mods/fabric-api)
+[![ForgedFabric API](ForgedFabricAPI.png)](https://www.curseforge.com/minecraft/mc-mods/forgedfabric)
 
 Opti "NOT" Fine ! is a small, jij-able mod for maximum warning to players who have OptiFine installed.
 
