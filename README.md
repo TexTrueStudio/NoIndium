@@ -1,17 +1,17 @@
-# No Indium? <img src="https://imgur.com/MB3Sjpt.png" align="right" width="160"/>
+# Opti "NOT" Fine ! (No Indium? Unofficial Forge Port) <img src="src/main/resources/icon.png" align="right" width="160"/>
 
-[![Fabric API](https://images2.imgbox.com/8e/38/bfInI5qv_o.png)](https://www.curseforge.com/minecraft/mc-mods/fabric-api)
+[![ForgedFabric API](ForgedFabricAPI.png)](https://www.curseforge.com/minecraft/mc-mods/fabric-api)
 
-No Indium? is a small, jij-able mod attempting to minimize the usage of Sodium without Indium on Fabric.
+Opti "NOT" Fine ! is a small, jij-able mod for maximum warning to players who have OptiFine installed.
 
 ## Features
 
-- Warns users using Sodium without Indium;
-- Warns users using Optifabric;
+- Warns users using OptiFine;
 - Configurable (disable one of the previous features, remove "Proceed Anyway" button).
 
-
+<!---
 ## Adding to your project
+
 
 ```
 repositories {
@@ -25,5 +25,4 @@ dependencies {
     include "me.luligabi:NoIndium:[VERSION]"
 }
 ```
-
-You may check the mod's current version on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/no-indium/files), [Modrinth](https://modrinth.com/mod/no-indium/versions) or [Github](https://github.com/Luligabi1/NoIndium/blob/1.19/gradle.properties#L9).
+--->

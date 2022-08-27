@@ -10,27 +10,32 @@ buildscript {
 }
 
 plugins {
-    id 'fabric-loom' version '0.12-SNAPSHOT'
     id 'maven-publish'
-    id "com.matthewprenger.cursegradle" version '1.4.0'
-    id "com.modrinth.minotaur" version '2.3.1'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'dev.architectury.loom' version '0.11.0-SNAPSHOT'
 }
 
 version = project.mod_version
 group = project.maven_group
 
-def ENV = System.getenv()
-
-def RELEASE_NAME = "${version}"
-def RELEASE_FILE = "${buildDir}/tmp/${archivesBaseName}-${version}-shadowed.jar"
-
-@SuppressWarnings('GrMethodMayBeStatic')
-def getChangeLog() {
-    return "- Updated to 1.19;\n- Removed Omega Config dependency."
+loom {
+    forge {
+        mixinConfigs = [
+                "noindium.mixins.json"
+        ]
+    }
 }
 
 repositories {
+    repositories {
+        maven {
+            name = "Curse Maven"
+            url = "https://cursemaven.com"
+            content {
+                includeGroup "curse.maven"
+            }
+        }
+    }
     maven { url "https://maven.shedaniel.me/" }
     maven { url "https://jitpack.io" }
 }
@@ -38,16 +43,17 @@ repositories {
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    forge "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    //modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    modImplementation "curse.maven:forgedfabric-api-662687:3945557"
 }
 
 processResources {
     inputs.property "version", project.version
     filteringCharset "UTF-8"
 
-    filesMatching("fabric.mod.json") {
+    filesMatching("META-INF/mods.toml") {
         expand "version": project.version
     }
 }
@@ -110,77 +116,15 @@ remapJar {
     inputFile.set(proguardJar.outJarFileCollection.singleFile)
 }
 
-curseforge {
-    if (ENV.CURSEFORGE_API_KEY) {
-        apiKey = ENV.CURSEFORGE_API_KEY
-    }
-
-    project {
-        id = project.curseforge_id
-        changelog = getChangeLog()
-        releaseType = "release"
-        addGameVersion project.minecraft_version
-        addGameVersion "Fabric"
-
-        mainArtifact(file(RELEASE_FILE)) {
-            displayName = RELEASE_NAME
-            relations {
-                requiredDependency 'fabric-api'
-            }
-        }
-
-        afterEvaluate {
-            uploadTask.dependsOn("remapJar")
-        }
-    }
-
-    options {
-        forgeGradleIntegration = false
-    }
-}
-
-//Modrinth publishing
-modrinth {
-    if (ENV.MODRINTH_TOKEN) {
-        token = ENV.MODRINTH_TOKEN
-    }
-    projectId = project.modrinth_id
-    versionNumber = project.mod_version
-    uploadFile = remapJar
-    gameVersions = [project.minecraft_version]
-    loaders = ['fabric']
-    versionType = "release"
-
-    dependencies {
-        required.project("fabric-api")
-    }
-}
-
 // configure the maven publication
 publishing {
     publications {
         mavenJava(MavenPublication) {
             // add all the jars that should be included when publishing to maven
-            artifact(remapJar) {
-                builtBy remapJar
-            }
-            artifact(sourcesJar) {
-                builtBy remapSourcesJar
-            }
         }
     }
 
     // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
     repositories {
-        maven {
-            url "https://maven.cafeteria.dev/releases"
-            credentials {
-                username = System.getenv().mcdUsername
-                password = System.getenv().mcdPassword
-            }
-            authentication {
-                basic(BasicAuthentication)
-            }
-        }
     }
 }

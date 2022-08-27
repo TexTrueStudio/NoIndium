@@ -4,10 +4,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.loading.FMLPaths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,13 +17,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 
-@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class NoIndium implements ClientModInitializer {
 
+
+
     @Override
-    public void onInitializeClient() {
+    public void onInitialize() {
         ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
-            if((HAS_SODIUM && CONFIG.showIndiumScreen) || (HAS_OPTIFABRIC && CONFIG.showOptifabricScreen)) {
+            if((HAS_RUBIDIUM && CONFIG.showRubidiumScreen) || (HAS_OPTIFINE && CONFIG.showOptifineScreen)) {
                 client.setScreen(new NoIndiumWarningScreen());
             }
         });
@@ -73,8 +76,8 @@ public class NoIndium implements ClientModInitializer {
         }
     }
 
-    public static final boolean HAS_SODIUM;
-    public static final boolean HAS_OPTIFABRIC;
+    public static final boolean HAS_RUBIDIUM;
+    public static final boolean HAS_OPTIFINE;
 
     public static final Logger LOGGER;
 
@@ -84,13 +87,14 @@ public class NoIndium implements ClientModInitializer {
 
 
     static {
-        HAS_SODIUM = (FabricLoader.getInstance().isModLoaded("sodium") && !FabricLoader.getInstance().isModLoaded("indium"));
-        HAS_OPTIFABRIC = FabricLoader.getInstance().isModLoaded("optifabric");
+        HAS_RUBIDIUM = (FabricLoader.getInstance().isModLoaded("rubidium") && !FabricLoader.getInstance().isModLoaded("sodiumextra"));
+        HAS_OPTIFINE = FabricLoader.getInstance().isModLoaded("optifine");
 
-        LOGGER = LoggerFactory.getLogger("No Indium?");;
+        LOGGER = LoggerFactory.getLogger("Opti 'NOT' Fine");;
 
         GSON = new GsonBuilder().setPrettyPrinting().create();
-        CONFIG_FILE = new File(String.format("%s%snoindium.json", FabricLoader.getInstance().getConfigDir(), File.separator));
+        CONFIG_FILE = new File(String.format("%s%sOpti-NOT-Fine.json", FMLPaths.CONFIGDIR.get(), File.separator));
         CONFIG = createConfig();
     }
+
 }

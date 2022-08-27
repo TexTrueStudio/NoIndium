@@ -1,0 +1,19 @@
+modLoader = "javafml"
+loaderVersion = "[30,)"
+license = "MIT"
+
+[[mods]]
+modId = "noindium"
+version = "${version}"
+displayName = "Opti 'NOT' Fine ! (No Indium? Forge Port)"
+logoFile= "logo.png"
+credits="Luligabi1,TexTrue"
+authors = "TexTrueStudio"
+description = "A small, jij-able mod for maximum warning to players who have OptiFine installed."
+
+[[dependencies.noindium]]
+modId = "forgedfabric"
+mandatory = true
+versionRange = "[0.0.2,)"
+ordering = "NONE"
+side = "BOTH"

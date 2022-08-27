@@ -1,9 +1,6 @@
 package me.luligabi.noindium;
 
 import me.luligabi.noindium.mixin.WarningScreenAccessor;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.font.MultilineText;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.screen.WarningScreen;
@@ -13,11 +10,14 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Util;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.io.File;
 
 @SuppressWarnings("ConstantConditions")
-@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class NoIndiumWarningScreen extends WarningScreen {
 
     protected NoIndiumWarningScreen() {
@@ -27,22 +27,22 @@ public class NoIndiumWarningScreen extends WarningScreen {
 
     @Override
     protected void initButtons(int yOffset) {
-        addDrawableChild(new ButtonWidget(width / 2 - 155, 100 + yOffset, 150, 20, NoIndium.HAS_SODIUM ? CURSEFORGE : OPEN_MODS_FOLDER, buttonWidget ->  {
-            if(NoIndium.HAS_SODIUM) Util.getOperatingSystem().open("https://www.curseforge.com/minecraft/mc-mods/indium");
-            else Util.getOperatingSystem().open(new File(FabricLoader.getInstance().getGameDir().toFile(), "mods"));
+        addDrawableChild(new ButtonWidget(width / 2 - 155, 100 + yOffset, 150, 20, NoIndium.HAS_RUBIDIUM ? CURSEFORGE : OPEN_MODS_FOLDER, buttonWidget ->  {
+            if(NoIndium.HAS_RUBIDIUM) Util.getOperatingSystem().open("https://www.curseforge.com/minecraft/mc-mods/rubidium");
+            else Util.getOperatingSystem().open(new File(FMLPaths.GAMEDIR.get().toFile(), "mods"));
         }));
 
-        addDrawableChild(new ButtonWidget(width / 2 - 155 + 160, 100 + yOffset, 150, 20, NoIndium.HAS_SODIUM ? MODRINTH : OPTIFINE_ALTERNATIVES, buttonWidget ->  {
-            Util.getOperatingSystem().open(NoIndium.HAS_SODIUM ? "https://modrinth.com/mod/indium" : "https://lambdaurora.dev/optifine_alternatives/");
+        addDrawableChild(new ButtonWidget(width / 2 - 155 + 160, 100 + yOffset, 150, 20, NoIndium.HAS_RUBIDIUM ? MODRINTH : OPTIFINE_ALTERNATIVES, buttonWidget ->  {
+            Util.getOperatingSystem().open(NoIndium.HAS_RUBIDIUM ? "https://modrinth.com/mod/rubidium" : "https://lambdaurora.dev/optifine_alternatives/");
         }));
 
         if(NoIndium.CONFIG.allowToProceed) {
             addDrawableChild(new ButtonWidget(width / 2 - 75, 130 + yOffset, 150, 20, Text.translatable("label.noindium.proceed"), buttonWidget ->  {
                 if(checkbox.isChecked()) {
-                    if(NoIndium.HAS_SODIUM) {
-                        NoIndium.CONFIG.showIndiumScreen = false;
+                    if(NoIndium.HAS_RUBIDIUM) {
+                        NoIndium.CONFIG.showRubidiumScreen = false;
                     } else {
-                        NoIndium.CONFIG.showOptifabricScreen = false;
+                        NoIndium.CONFIG.showOptifineScreen = false;
                     }
                     NoIndium.saveConfig(NoIndium.CONFIG);
                 }
@@ -68,8 +68,8 @@ public class NoIndiumWarningScreen extends WarningScreen {
         return false;
     }
 
-    private static final MutableText HEADER = Text.translatable(NoIndium.HAS_SODIUM ? "header.noindium.indium" : "header.noindium.optifabric").formatted(Formatting.DARK_RED, Formatting.BOLD);
-    private static final Text MESSAGE = Text.translatable(NoIndium.HAS_SODIUM ? "message.noindium.indium" : "message.noindium.optifabric");
+    private static final MutableText HEADER = Text.translatable(NoIndium.HAS_RUBIDIUM ? "header.noindium.indium" : "header.noindium.optifine").formatted(Formatting.DARK_RED, Formatting.BOLD);
+    private static final Text MESSAGE = Text.translatable(NoIndium.HAS_RUBIDIUM ? "message.noindium.indium" : "message.noindium.optifine");
     private static final Text CHECK_MESSAGE = Text.translatable("multiplayerWarning.check");
     private static final MutableText NARRATED_TEXT = HEADER.copy().append("\n").append(MESSAGE);
 
