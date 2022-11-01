@@ -3,12 +3,18 @@ package me.luligabi.noindium;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
-import net.fabricmc.loader.api.FabricLoader;
+//import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fakefabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
+//import net.fabricmc.loader.api.FabricLoader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.IExtensionPoint;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
+import net.minecraftforge.network.NetworkConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,12 +24,18 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 
 @OnlyIn(Dist.CLIENT)
-public class NoIndium implements ClientModInitializer {
+public class NoIndium {
+
+    public NoIndium() {
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onInitializeClient);
+
+        ModLoadingContext.get().registerExtensionPoint(IExtensionPoint.DisplayTest.class, () -> new IExtensionPoint.DisplayTest(() -> NetworkConstants.IGNORESERVERONLY, (a, b) -> true));
+
+    }
 
 
-
-    @Override
-    public void onInitialize() {
+    //@Override
+    public void onInitializeClient(final FMLClientSetupEvent event) {
         ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
             if((HAS_RUBIDIUM && CONFIG.showRubidiumScreen) || (HAS_OPTIFINE && CONFIG.showOptifineScreen)) {
                 client.setScreen(new NoIndiumWarningScreen());
@@ -87,13 +99,13 @@ public class NoIndium implements ClientModInitializer {
 
 
     static {
-        HAS_RUBIDIUM = (FabricLoader.getInstance().isModLoaded("rubidium") && !FabricLoader.getInstance().isModLoaded("sodiumextra"));
-        HAS_OPTIFINE = FabricLoader.getInstance().isModLoaded("optifine");
+        HAS_RUBIDIUM = (ModList.get().isLoaded("rubidium")) && !ModList.get().isLoaded("sodiumextra");
+        HAS_OPTIFINE = ModList.get().isLoaded("optifine");
 
-        LOGGER = LoggerFactory.getLogger("Opti 'NOT' Fine");;
+        LOGGER = LoggerFactory.getLogger("Opt 'NOT' Fine");
 
         GSON = new GsonBuilder().setPrettyPrinting().create();
-        CONFIG_FILE = new File(String.format("%s%sOpti-NOT-Fine.json", FMLPaths.CONFIGDIR.get(), File.separator));
+        CONFIG_FILE = new File(String.format("%s%sOpt-NOT-Fine.json", FMLPaths.CONFIGDIR.get(), File.separator));
         CONFIG = createConfig();
     }
 
