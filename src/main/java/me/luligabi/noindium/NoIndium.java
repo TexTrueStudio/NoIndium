@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
 //import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fakefabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
+import me.luligabi.noindium.client.ClientLifecycleEvents;
 //import net.fabricmc.loader.api.FabricLoader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -37,7 +37,8 @@ public class NoIndium {
     //@Override
     public void onInitializeClient(final FMLClientSetupEvent event) {
         ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
-            if((HAS_RUBIDIUM && CONFIG.showRubidiumScreen) || (HAS_OPTIFINE && CONFIG.showOptifineScreen)) {
+            //if((HAS_RUBIDIUM && CONFIG.showRubidiumScreen) || (HAS_OPTIFINE && CONFIG.showOptifineScreen)) {
+            if(HAS_OPTIFINE && CONFIG.showOptifineScreen) {
                 client.setScreen(new NoIndiumWarningScreen());
             }
         });
@@ -90,6 +91,7 @@ public class NoIndium {
 
     public static final boolean HAS_RUBIDIUM;
     public static final boolean HAS_OPTIFINE;
+    public static final boolean HAS_OPTIFORGE;
 
     public static final Logger LOGGER;
 
@@ -101,6 +103,7 @@ public class NoIndium {
     static {
         HAS_RUBIDIUM = (ModList.get().isLoaded("rubidium")) && !ModList.get().isLoaded("sodiumextra");
         HAS_OPTIFINE = ModList.get().isLoaded("optifine");
+        HAS_OPTIFORGE =  ModList.get().isLoaded("optiforge");
 
         LOGGER = LoggerFactory.getLogger("Opt 'NOT' Fine");
 

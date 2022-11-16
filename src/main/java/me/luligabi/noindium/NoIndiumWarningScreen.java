@@ -27,21 +27,19 @@ public class NoIndiumWarningScreen extends WarningScreen {
 
     @Override
     protected void initButtons(int yOffset) {
-        addDrawableChild(new ButtonWidget(width / 2 - 155, 100 + yOffset, 150, 20, NoIndium.HAS_RUBIDIUM ? CURSEFORGE : OPEN_MODS_FOLDER, buttonWidget ->  {
-            if(NoIndium.HAS_RUBIDIUM) Util.getOperatingSystem().open("https://www.curseforge.com/minecraft/mc-mods/rubidium");
-            else Util.getOperatingSystem().open(new File(FMLPaths.GAMEDIR.get().toFile(), "mods"));
+        addDrawableChild(new ButtonWidget(width / 2 - 155, 100 + yOffset, 150, 20, NoIndium.HAS_OPTIFINE ? CURSEFORGE : OPEN_MODS_FOLDER, buttonWidget ->  {
+            if(NoIndium.HAS_OPTIFINE) Util.getOperatingSystem().open("https://www.curseforge.com/minecraft/mc-mods/indium");
+            else Util.getOperatingSystem().open(new File(FMLPaths.MODSDIR.get().toFile(), "mods"));
         }));
 
-        addDrawableChild(new ButtonWidget(width / 2 - 155 + 160, 100 + yOffset, 150, 20, NoIndium.HAS_RUBIDIUM ? MODRINTH : OPTIFINE_ALTERNATIVES, buttonWidget ->  {
-            Util.getOperatingSystem().open(NoIndium.HAS_RUBIDIUM ? "https://modrinth.com/mod/rubidium" : "https://lambdaurora.dev/optifine_alternatives/");
+        addDrawableChild(new ButtonWidget(width / 2 - 155 + 160, 100 + yOffset, 150, 20, NoIndium.HAS_OPTIFINE ? MODRINTH : OPTIFINE_ALTERNATIVES, buttonWidget ->  {
+            Util.getOperatingSystem().open("https://lambdaurora.dev/optifine_alternatives/");
         }));
 
         if(NoIndium.CONFIG.allowToProceed) {
             addDrawableChild(new ButtonWidget(width / 2 - 75, 130 + yOffset, 150, 20, Text.translatable("label.noindium.proceed"), buttonWidget ->  {
                 if(checkbox.isChecked()) {
-                    if(NoIndium.HAS_RUBIDIUM) {
-                        NoIndium.CONFIG.showRubidiumScreen = false;
-                    } else {
+                    if(NoIndium.HAS_OPTIFINE) {
                         NoIndium.CONFIG.showOptifineScreen = false;
                     }
                     NoIndium.saveConfig(NoIndium.CONFIG);
@@ -68,8 +66,8 @@ public class NoIndiumWarningScreen extends WarningScreen {
         return false;
     }
 
-    private static final MutableText HEADER = Text.translatable(NoIndium.HAS_RUBIDIUM ? "header.noindium.indium" : "header.noindium.optifine").formatted(Formatting.DARK_RED, Formatting.BOLD);
-    private static final Text MESSAGE = Text.translatable(NoIndium.HAS_RUBIDIUM ? "message.noindium.indium" : "message.noindium.optifine");
+    private static final MutableText HEADER = Text.translatable("header.noindium.optifine").formatted(Formatting.DARK_RED, Formatting.BOLD);
+    private static final Text MESSAGE = Text.translatable("message.noindium.optifine");
     private static final Text CHECK_MESSAGE = Text.translatable("multiplayerWarning.check");
     private static final MutableText NARRATED_TEXT = HEADER.copy().append("\n").append(MESSAGE);
 
